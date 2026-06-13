@@ -14,6 +14,9 @@
 
 import SwiftUI
 import os.log
+#if canImport(UIKit)
+import UIKit
+#endif
 
 // MARK: - OnyxApp
 
@@ -41,6 +44,9 @@ struct OnyxApp: App {
                     OnyxApp.log.notice("🟢 ContentView appeared — UI pipeline healthy")
                 }
         }
+        #if os(macOS)
+        .defaultSize(width: 900, height: 650)
+        #endif
         .onChange(of: scenePhase) { _, newPhase in
             Self.log.notice("📱 scenePhase → \(String(describing: newPhase), privacy: .public)")
             if newPhase == .background {
@@ -78,8 +84,13 @@ struct OnyxApp: App {
         log.notice("🔧 bundle id  : \(Bundle.main.bundleIdentifier ?? "?", privacy: .public)")
         log.notice("🔧 build ver  : \(Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "?", privacy: .public)")
         log.notice("🔧 short ver  : \(Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "?", privacy: .public)")
+        #if canImport(UIKit)
         log.notice("🔧 iOS        : \(UIDevice.current.systemVersion, privacy: .public)")
         log.notice("🔧 device     : \(UIDevice.current.model, privacy: .public)")
+        #else
+        log.notice("🔧 macOS      : \(ProcessInfo.processInfo.operatingSystemVersionString, privacy: .public)")
+        log.notice("🔧 device     : \(Host.current().localizedName ?? "Mac", privacy: .public)")
+        #endif
 
         // Entitlement probe — confirms whether the aps-environment key is
         // present in the signed binary. Missing = XPC crash on iOS 27.

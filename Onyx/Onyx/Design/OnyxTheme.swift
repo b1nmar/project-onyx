@@ -100,5 +100,5 @@ private struct DiamondShape: Shape {
         OnyxLogoMark(size: 128)
     }
     .padding()
-    .background(Color(.systemBackground))
+    .background(Color.systemBackground)
 }

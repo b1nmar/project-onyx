@@ -81,7 +81,7 @@ struct ChatView: View {
                 inputBar
             }
             .navigationTitle("Onyx")
-            .navigationBarTitleDisplayMode(.inline)
+            .navigationTitleInline()
             .toolbar { toolbarContent }
         }
         .task { await refreshModelInfo() }
@@ -106,7 +106,7 @@ struct ChatView: View {
                 }
                 .padding(.vertical, 8)
             }
-            .scrollDismissesKeyboard(.interactively)
+            .dismissKeyboardOnScroll()
             // Auto-scroll to the streaming message as tokens arrive.
             .onChange(of: messages.last?.text) { _, _ in
                 if let id = streamingMessageId {
@@ -178,7 +178,7 @@ struct ChatView: View {
                 .lineLimit(1...5)
                 .padding(.horizontal, 14)
                 .padding(.vertical, 10)
-                .background(Color(.secondarySystemBackground))
+                .background(Color.secondarySystemBackground)
                 .clipShape(RoundedRectangle(cornerRadius: 20))
                 .disabled(provider.isGenerating)
                 .onSubmit { sendIfReady() }
@@ -194,7 +194,7 @@ struct ChatView: View {
         }
         .padding(.horizontal, 14)
         .padding(.vertical, 10)
-        .background(Color(.systemBackground))
+        .background(Color.systemBackground)
     }
 
     private var canSend: Bool {
@@ -209,11 +209,11 @@ struct ChatView: View {
     @ToolbarContentBuilder
     private var toolbarContent: some ToolbarContent {
         // Model name picker (left side).
-        ToolbarItem(placement: .topBarLeading) {
+        ToolbarItem(placement: .onyxLeading) {
             modelPickerMenu
         }
         // Status dot + clear button (right side).
-        ToolbarItemGroup(placement: .topBarTrailing) {
+        ToolbarItemGroup(placement: .onyxTrailing) {
             statusDot
             Button {
                 Task { await clearChat() }

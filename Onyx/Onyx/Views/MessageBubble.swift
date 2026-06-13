@@ -80,14 +80,14 @@ struct MessageBubble: View {
                 bubbleContent
                     .padding(.horizontal, 14)
                     .padding(.vertical, 10)
-                    .background(isUser ? Color.accentColor : Color(.secondarySystemBackground))
+                    .background(isUser ? Color.accentColor : Color.secondarySystemBackground)
                     .foregroundStyle(isUser ? .white : .primary)
                     .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
                     // Subtle border on assistant bubbles for definition on
                     // pure-white backgrounds in light mode.
                     .overlay(
                         RoundedRectangle(cornerRadius: 18, style: .continuous)
-                            .strokeBorder(isUser ? .clear : Color(.separator),
+                            .strokeBorder(isUser ? .clear : Color.systemSeparator,
                                           lineWidth: 0.5)
                     )
                     .accessibilityLabel(isUser ? "You" : "Assistant")

@@ -13,8 +13,10 @@
 // limitations under the License.
 
 import SwiftUI
-import UIKit
 import os.log
+#if canImport(UIKit)
+import UIKit
+#endif
 
 // MARK: - ContentView
 //
@@ -65,6 +67,7 @@ struct ContentView: View {
         .onReceive(NotificationCenter.default.publisher(for: .switchToModelsTab)) { _ in
             selectedTab = .models
         }
+        #if canImport(UIKit)
         .onReceive(NotificationCenter.default.publisher(
             for: UIApplication.didReceiveMemoryWarningNotification
         )) { _ in
@@ -72,6 +75,7 @@ struct ContentView: View {
             ChatProvider.shared.cancel()
             Task { await MLXModelManager.shared.unloadModel() }
         }
+        #endif
     }
 }
 
