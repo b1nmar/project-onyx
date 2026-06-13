@@ -190,7 +190,7 @@ struct DownloadRow: View {
             .font(.caption2)
             .padding(.horizontal, 8)
             .padding(.vertical, 4)
-            .background(Color(.tertiarySystemBackground))
+            .background(Color.tertiarySystemBackground)
             .clipShape(Capsule())
             .foregroundStyle(.secondary)
     }

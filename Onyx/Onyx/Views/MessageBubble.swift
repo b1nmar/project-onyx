@@ -70,7 +70,15 @@ struct MessageBubble: View {
     /// True while streaming; shows `ThinkingDotsView` if text is empty.
     var isStreaming: Bool = false
 
+    @Environment(\.colorScheme) private var colorScheme
+
     private var isUser: Bool { message.role == .user }
+
+    // The accent flips light/dark between color schemes (obsidian ↔ silver).
+    // Pick the contrasting text color rather than hardcoding .white.
+    private var userTextColor: Color {
+        colorScheme == .dark ? .black : .white
+    }
 
     var body: some View {
         HStack(alignment: .bottom) {
@@ -81,7 +89,7 @@ struct MessageBubble: View {
                     .padding(.horizontal, 14)
                     .padding(.vertical, 10)
                     .background(isUser ? Color.accentColor : Color.secondarySystemBackground)
-                    .foregroundStyle(isUser ? .white : .primary)
+                    .foregroundStyle(isUser ? userTextColor : .primary)
                     .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
                     // Subtle border on assistant bubbles for definition on
                     // pure-white backgrounds in light mode.

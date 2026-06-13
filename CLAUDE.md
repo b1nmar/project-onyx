@@ -4,15 +4,25 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project
 
-Onyx is an iPhone-first on-device LLM chat app built on Apple's MLX framework. It is an open-source skeleton (Apache 2.0) that developers can fork and extend. It deliberately ships minimal: one model, no accounts, no API keys, no persistence.
+Onyx is a multiplatform on-device LLM chat app (iOS + macOS native) built on Apple's MLX framework. Forked from kiraa-ai/project-onyx. Ships minimal: one model, no accounts, no API keys, no persistence.
 
 - **Xcode project**: `Onyx/Onyx.xcodeproj`
-- **Bundle id**: `kiraa.Onyx`
+- **iOS bundle id**: `com.litusmar.onyx` | **macOS bundle id**: `com.litusmar.onyx.mac`
 - **App version**: 0.1 (beta)
-- **Deployment target**: iOS 17.0+
+- **Deployment targets**: iOS 17.0+ / macOS 14.0+
 - **Swift packages**: `mlx-swift-lm` (3.31.3+) and `swift-transformers` (1.3.0+), both resolved remotely
-- **Entitlements**: only `com.apple.developer.kernel.increased-memory-limit`
-- **Known issue**: iOS 27 beta is NOT supported — the app crashes pre-main at launch on iOS 27 (XPC/loader crash, under investigation). Supported: iOS 17–26.
+- **iOS entitlements**: `com.apple.developer.kernel.increased-memory-limit`
+- **macOS entitlements**: `app-sandbox` + `network.client` + `files.user-selected.read-write` (in `mac/mac.entitlements`)
+- **Known issue**: iOS 27 beta is NOT supported — crashes pre-main. Supported: iOS 17–26.
+
+## Multiplatform architecture
+
+Platform-specific code is isolated in `Onyx/Onyx/Design/PlatformAdaptations.swift`:
+- `Color.systemBackground`, `.secondarySystemBackground`, `.tertiarySystemBackground`, `.systemSeparator` — adaptive UIColor/NSColor wrappers
+- `ToolbarItemPlacement.onyxLeading` / `.onyxTrailing` — `.topBarLeading/Trailing` on iOS, `.navigation/.automatic` on macOS
+- `View.navigationTitleInline()` / `.dismissKeyboardOnScroll()` — iOS-only modifiers, no-op on macOS
+
+`MessageBubble` uses `@Environment(\.colorScheme)` to pick contrasting text on the accent bubble (the accent inverts light/dark: obsidian in light mode, silver in dark mode).
 
 ## Build commands
 

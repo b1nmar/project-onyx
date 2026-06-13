@@ -260,11 +260,11 @@ private struct MDCodeBlockView: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
         }
-        .background(Color(.tertiarySystemBackground))
+        .background(Color.tertiarySystemBackground)
         .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
         .overlay(
             RoundedRectangle(cornerRadius: 10, style: .continuous)
-                .strokeBorder(Color(.separator), lineWidth: 0.5)
+                .strokeBorder(Color.systemSeparator, lineWidth: 0.5)
         )
     }
 }

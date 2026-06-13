@@ -45,6 +45,15 @@ extension Color {
         #endif
     }
 
+    /// Maps to `UIColor.tertiarySystemBackground` (iOS) / `NSColor.windowBackgroundColor` (macOS).
+    static var tertiarySystemBackground: Color {
+        #if os(iOS)
+        Color(UIColor.tertiarySystemBackground)
+        #else
+        Color(NSColor.underPageBackgroundColor)
+        #endif
+    }
+
     /// Maps to `UIColor.separator` (iOS) / `NSColor.separatorColor` (macOS).
     static var systemSeparator: Color {
         #if os(iOS)

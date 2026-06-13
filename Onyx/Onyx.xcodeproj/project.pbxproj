@@ -11,6 +11,10 @@
 		AABB00070000000000000007 /* MLXLMCommon in Frameworks */ = {isa = PBXBuildFile; productRef = AABB00040000000000000004 /* MLXLMCommon */; };
 		AABB00080000000000000008 /* Transformers in Frameworks */ = {isa = PBXBuildFile; productRef = AABB00050000000000000005 /* Transformers */; };
 		AABB00090000000000000009 /* Hub in Frameworks */ = {isa = PBXBuildFile; productRef = AABB000A000000000000000A /* Hub */; };
+		EA53F1C72FDDF3B50056E2CA /* MLXLLM in Frameworks */ = {isa = PBXBuildFile; productRef = EA53F1C62FDDF3B50056E2CA /* MLXLLM */; };
+		EA53F1C92FDDF3B50056E2CA /* MLXLMCommon in Frameworks */ = {isa = PBXBuildFile; productRef = EA53F1C82FDDF3B50056E2CA /* MLXLMCommon */; };
+		EA53F1CB2FDDF3BD0056E2CA /* Tokenizers in Frameworks */ = {isa = PBXBuildFile; productRef = EA53F1CA2FDDF3BD0056E2CA /* Tokenizers */; };
+		EA53F1CD2FDDF3C30056E2CA /* Hub in Frameworks */ = {isa = PBXBuildFile; productRef = EA53F1CC2FDDF3C30056E2CA /* Hub */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -34,6 +38,7 @@
 		71B0B77F2FD387EC0082B928 /* Onyx.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Onyx.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		71B0B7902FD387ED0082B928 /* OnyxTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OnyxTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		71B0B79A2FD387ED0082B928 /* OnyxUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OnyxUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		EA53F1A22FDDF1AC0056E2CA /* mac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = mac.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -93,6 +98,17 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		EA53F19F2FDDF1AC0056E2CA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EA53F1C92FDDF3B50056E2CA /* MLXLMCommon in Frameworks */,
+				EA53F1C72FDDF3B50056E2CA /* MLXLLM in Frameworks */,
+				EA53F1CD2FDDF3C30056E2CA /* Hub in Frameworks */,
+				EA53F1CB2FDDF3BD0056E2CA /* Tokenizers in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -102,6 +118,7 @@
 				71B0B7812FD387EC0082B928 /* Onyx */,
 				71B0B7932FD387ED0082B928 /* OnyxTests */,
 				71B0B79D2FD387ED0082B928 /* OnyxUITests */,
+				EA53F1C52FDDF3B50056E2CA /* Frameworks */,
 				71B0B7802FD387EC0082B928 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -112,8 +129,16 @@
 				71B0B77F2FD387EC0082B928 /* Onyx.app */,
 				71B0B7902FD387ED0082B928 /* OnyxTests.xctest */,
 				71B0B79A2FD387ED0082B928 /* OnyxUITests.xctest */,
+				EA53F1A22FDDF1AC0056E2CA /* mac.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		EA53F1C52FDDF3B50056E2CA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -191,6 +216,32 @@
 			productReference = 71B0B79A2FD387ED0082B928 /* OnyxUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
+		EA53F1A12FDDF1AC0056E2CA /* mac */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EA53F1AA2FDDF1AE0056E2CA /* Build configuration list for PBXNativeTarget "mac" */;
+			buildPhases = (
+				EA53F19E2FDDF1AC0056E2CA /* Sources */,
+				EA53F19F2FDDF1AC0056E2CA /* Frameworks */,
+				EA53F1A02FDDF1AC0056E2CA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				71B0B7812FD387EC0082B928 /* Onyx */,
+			);
+			name = mac;
+			packageProductDependencies = (
+				EA53F1C62FDDF3B50056E2CA /* MLXLLM */,
+				EA53F1C82FDDF3B50056E2CA /* MLXLMCommon */,
+				EA53F1CA2FDDF3BD0056E2CA /* Tokenizers */,
+				EA53F1CC2FDDF3C30056E2CA /* Hub */,
+			);
+			productName = mac;
+			productReference = EA53F1A22FDDF1AC0056E2CA /* mac.app */;
+			productType = "com.apple.product-type.application";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -211,6 +262,9 @@
 					71B0B7992FD387ED0082B928 = {
 						CreatedOnToolsVersion = 26.5;
 						TestTargetID = 71B0B77E2FD387EC0082B928;
+					};
+					EA53F1A12FDDF1AC0056E2CA = {
+						CreatedOnToolsVersion = 26.5;
 					};
 				};
 			};
@@ -235,6 +289,7 @@
 				71B0B77E2FD387EC0082B928 /* Onyx */,
 				71B0B78F2FD387ED0082B928 /* OnyxTests */,
 				71B0B7992FD387ED0082B928 /* OnyxUITests */,
+				EA53F1A12FDDF1AC0056E2CA /* mac */,
 			);
 		};
 /* End PBXProject section */
@@ -255,6 +310,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		71B0B7982FD387ED0082B928 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EA53F1A02FDDF1AC0056E2CA /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -285,6 +347,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		EA53F19E2FDDF1AC0056E2CA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -307,9 +376,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Onyx/Onyx.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = VVH38B9225;
+				DEVELOPMENT_TEAM = 7AAPHREPW3;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Onyx/Info.plist;
@@ -325,8 +395,9 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 0.1;
-				PRODUCT_BUNDLE_IDENTIFIER = kiraa.Onyx;
+				PRODUCT_BUNDLE_IDENTIFIER = com.litusmar.onyx;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
@@ -343,9 +414,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Onyx/Onyx.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = VVH38B9225;
+				DEVELOPMENT_TEAM = 7AAPHREPW3;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Onyx/Info.plist;
@@ -361,8 +433,9 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 0.1;
-				PRODUCT_BUNDLE_IDENTIFIER = kiraa.Onyx;
+				PRODUCT_BUNDLE_IDENTIFIER = com.litusmar.onyx;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
@@ -578,6 +651,94 @@
 			};
 			name = Release;
 		};
+		EA53F1AB2FDDF1AE0056E2CA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 7AAPHREPW3;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_INCOMING_NETWORK_CONNECTIONS = NO;
+				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_RESOURCE_ACCESS_AUDIO_INPUT = NO;
+				ENABLE_RESOURCE_ACCESS_BLUETOOTH = NO;
+				ENABLE_RESOURCE_ACCESS_CALENDARS = NO;
+				ENABLE_RESOURCE_ACCESS_CAMERA = NO;
+				ENABLE_RESOURCE_ACCESS_CONTACTS = NO;
+				ENABLE_RESOURCE_ACCESS_LOCATION = NO;
+				ENABLE_RESOURCE_ACCESS_PRINTING = NO;
+				ENABLE_RESOURCE_ACCESS_USB = NO;
+				ENABLE_USER_SELECTED_FILES = readonly;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 26.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.litusmar.onyx.mac;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
+				SDKROOT = macosx;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		EA53F1AC2FDDF1AE0056E2CA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 7AAPHREPW3;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_INCOMING_NETWORK_CONNECTIONS = NO;
+				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_RESOURCE_ACCESS_AUDIO_INPUT = NO;
+				ENABLE_RESOURCE_ACCESS_BLUETOOTH = NO;
+				ENABLE_RESOURCE_ACCESS_CALENDARS = NO;
+				ENABLE_RESOURCE_ACCESS_CAMERA = NO;
+				ENABLE_RESOURCE_ACCESS_CONTACTS = NO;
+				ENABLE_RESOURCE_ACCESS_LOCATION = NO;
+				ENABLE_RESOURCE_ACCESS_PRINTING = NO;
+				ENABLE_RESOURCE_ACCESS_USB = NO;
+				ENABLE_USER_SELECTED_FILES = readonly;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 26.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.litusmar.onyx.mac;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
+				SDKROOT = macosx;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -617,6 +778,15 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		EA53F1AA2FDDF1AE0056E2CA /* Build configuration list for PBXNativeTarget "mac" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EA53F1AB2FDDF1AE0056E2CA /* Debug */,
+				EA53F1AC2FDDF1AE0056E2CA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
@@ -636,7 +806,6 @@
 				minimumVersion = 1.3.0;
 			};
 		};
-
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -656,6 +825,26 @@
 			productName = Transformers;
 		};
 		AABB000A000000000000000A /* Hub */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AABB00020000000000000002 /* XCRemoteSwiftPackageReference "swift-transformers" */;
+			productName = Hub;
+		};
+		EA53F1C62FDDF3B50056E2CA /* MLXLLM */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AABB00010000000000000001 /* XCRemoteSwiftPackageReference "mlx-swift-lm" */;
+			productName = MLXLLM;
+		};
+		EA53F1C82FDDF3B50056E2CA /* MLXLMCommon */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AABB00010000000000000001 /* XCRemoteSwiftPackageReference "mlx-swift-lm" */;
+			productName = MLXLMCommon;
+		};
+		EA53F1CA2FDDF3BD0056E2CA /* Tokenizers */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AABB00020000000000000002 /* XCRemoteSwiftPackageReference "swift-transformers" */;
+			productName = Tokenizers;
+		};
+		EA53F1CC2FDDF3C30056E2CA /* Hub */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = AABB00020000000000000002 /* XCRemoteSwiftPackageReference "swift-transformers" */;
 			productName = Hub;

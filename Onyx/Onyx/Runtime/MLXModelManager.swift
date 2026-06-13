@@ -280,26 +280,20 @@ nonisolated public func generateFromModel(
 
     return AsyncStream<String> { continuation in
         Task {
-            do {
-                var tokenCount = 0
-                // The labelled break is required: a plain `break` inside a
-                // `switch` only exits the switch, not the enclosing for-await.
-                tokenLoop: for try await event in generationStream {
-                    switch event {
-                    case .chunk(let text):
-                        continuation.yield(text)
-                        tokenCount += 1
-                        if tokenCount >= maxTokens { break tokenLoop }
-                    case .info:
-                        break
-                    default:
-                        break
-                    }
+            var tokenCount = 0
+            // The labelled break is required: a plain `break` inside a
+            // `switch` only exits the switch, not the enclosing for-await.
+            tokenLoop: for await event in generationStream {
+                switch event {
+                case .chunk(let text):
+                    continuation.yield(text)
+                    tokenCount += 1
+                    if tokenCount >= maxTokens { break tokenLoop }
+                case .info:
+                    break
+                default:
+                    break
                 }
-            } catch {
-                // Errors during generation (e.g. framework-level OOM) are
-                // swallowed here so the stream always terminates cleanly.
-                // The caller sees an abrupt end-of-stream rather than a hang.
             }
             continuation.finish()
         }

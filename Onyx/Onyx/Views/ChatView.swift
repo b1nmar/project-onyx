@@ -73,6 +73,8 @@ struct ChatView: View {
     /// The ID of the in-progress assistant message, used to scroll to it.
     @State private var streamingMessageId: UUID? = nil
 
+    @FocusState private var isInputFocused: Bool
+
     var body: some View {
         NavigationStack {
             VStack(spacing: 0) {
@@ -85,6 +87,10 @@ struct ChatView: View {
             .toolbar { toolbarContent }
         }
         .task { await refreshModelInfo() }
+        .onAppear { isInputFocused = true }
+        .onChange(of: provider.isGenerating) { _, isGenerating in
+            if !isGenerating { isInputFocused = true }
+        }
     }
 
     // MARK: - Message list
@@ -180,6 +186,7 @@ struct ChatView: View {
                 .padding(.vertical, 10)
                 .background(Color.secondarySystemBackground)
                 .clipShape(RoundedRectangle(cornerRadius: 20))
+                .focused($isInputFocused)
                 .disabled(provider.isGenerating)
                 .onSubmit { sendIfReady() }
 
