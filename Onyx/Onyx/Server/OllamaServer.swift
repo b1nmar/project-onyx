@@ -137,7 +137,7 @@ actor OllamaServer {
 
     private func route(request: HTTPRequest, connection: NWConnection) async {
         if request.method == "OPTIONS" {
-            await sendJSON(connection, status: 200, body: "{}")
+            await sendCORSPreflight(connection)
             return
         }
         switch (request.method, request.path) {
@@ -358,6 +358,17 @@ actor OllamaServer {
     }
 
     // MARK: - Response writing
+
+    private func sendCORSPreflight(_ conn: NWConnection) async {
+        let header = "HTTP/1.1 204 No Content\r\n" +
+            "Access-Control-Allow-Origin: *\r\n" +
+            "Access-Control-Allow-Methods: GET, POST, OPTIONS\r\n" +
+            "Access-Control-Allow-Headers: Content-Type, Authorization\r\n" +
+            "Access-Control-Max-Age: 86400\r\n" +
+            "Content-Length: 0\r\n" +
+            "Connection: close\r\n\r\n"
+        await sendRaw(conn, data: Data(header.utf8))
+    }
 
     private func sendStreamingHeaders(_ conn: NWConnection, contentType: String) async {
         let h = "HTTP/1.1 200 OK\r\nContent-Type: \(contentType)\r\nConnection: close\r\nAccess-Control-Allow-Origin: *\r\n\r\n"
