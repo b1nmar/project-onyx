@@ -43,27 +43,27 @@ struct OnyxApp: App {
                 .onAppear {
                     OnyxApp.log.notice("🟢 ContentView appeared — UI pipeline healthy")
                 }
+                .task {
+                    // Start at launch if the user had the server enabled.
+                    if OnyxSettings.shared.ollamaServerEnabled {
+                        try? await OllamaServer.shared.start(
+                            port: UInt16(OnyxSettings.shared.ollamaServerPort))
+                    }
+                    // React to the Settings toggle without needing a View modifier.
+                    for await _ in NotificationCenter.default.notifications(
+                        named: .ollamaServerSettingChanged) {
+                        if OnyxSettings.shared.ollamaServerEnabled {
+                            try? await OllamaServer.shared.start(
+                                port: UInt16(OnyxSettings.shared.ollamaServerPort))
+                        } else {
+                            await OllamaServer.shared.stop()
+                        }
+                    }
+                }
         }
         #if os(macOS)
         .defaultSize(width: 900, height: 650)
         #endif
-        .task {
-            // Start at launch if the user had the server enabled.
-            if OnyxSettings.shared.ollamaServerEnabled {
-                try? await OllamaServer.shared.start(
-                    port: UInt16(OnyxSettings.shared.ollamaServerPort))
-            }
-            // React to the Settings toggle without needing a View modifier.
-            for await _ in NotificationCenter.default.notifications(
-                named: .ollamaServerSettingChanged) {
-                if OnyxSettings.shared.ollamaServerEnabled {
-                    try? await OllamaServer.shared.start(
-                        port: UInt16(OnyxSettings.shared.ollamaServerPort))
-                } else {
-                    await OllamaServer.shared.stop()
-                }
-            }
-        }
         .onChange(of: scenePhase) { _, newPhase in
             Self.log.notice("📱 scenePhase → \(String(describing: newPhase), privacy: .public)")
             if newPhase == .background {
