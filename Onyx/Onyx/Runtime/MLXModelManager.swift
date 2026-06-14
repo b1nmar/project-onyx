@@ -279,11 +279,10 @@ nonisolated public func generateFromModel(
     )
 
     return AsyncStream<String> { continuation in
-        Task {
+        let task = Task {
             var tokenCount = 0
-            // The labelled break is required: a plain `break` inside a
-            // `switch` only exits the switch, not the enclosing for-await.
             tokenLoop: for await event in generationStream {
+                if Task.isCancelled { break tokenLoop }
                 switch event {
                 case .chunk(let text):
                     continuation.yield(text)
@@ -297,5 +296,7 @@ nonisolated public func generateFromModel(
             }
             continuation.finish()
         }
+        // Cancel the MLX inference task when the consumer abandons the stream.
+        continuation.onTermination = { _ in task.cancel() }
     }
 }

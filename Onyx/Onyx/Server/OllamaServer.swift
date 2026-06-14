@@ -254,7 +254,10 @@ actor OllamaServer {
                     model: modelName, createdAt: now,
                     response: token, done: false, doneReason: nil))
             }
-            if var line = data { line.append(0x0A); await sendRaw(connection, data: line) }
+            if var line = data {
+                line.append(0x0A)
+                guard await sendRaw(connection, data: line) else { break }
+            }
         }
 
         let finalData: Data?
@@ -331,7 +334,7 @@ actor OllamaServer {
                     index: 0,
                     delta: OpenAIDelta(role: nil, content: token),
                     finishReason: nil)])) {
-                await sendSSELine(connection, data: data)
+                guard await sendSSELine(connection, data: data) else { break }
             }
         }
 
@@ -379,11 +382,12 @@ actor OllamaServer {
         await sendRaw(conn, data: Data(h.utf8))
     }
 
-    private func sendSSELine(_ conn: NWConnection, data: Data) async {
+    @discardableResult
+    private func sendSSELine(_ conn: NWConnection, data: Data) async -> Bool {
         var line = Data("data: ".utf8)
         line.append(data)
         line.append(Data("\n\n".utf8))
-        await sendRaw(conn, data: line)
+        return await sendRaw(conn, data: line)
     }
 
     private func sendJSON(_ conn: NWConnection, status: Int, body: String) async {
@@ -405,9 +409,12 @@ actor OllamaServer {
         await sendRaw(conn, data: response)
     }
 
-    private func sendRaw(_ conn: NWConnection, data: Data) async {
-        await withCheckedContinuation { (cont: CheckedContinuation<Void, Never>) in
-            conn.send(content: data, completion: .contentProcessed { _ in cont.resume() })
+    @discardableResult
+    private func sendRaw(_ conn: NWConnection, data: Data) async -> Bool {
+        await withCheckedContinuation { (cont: CheckedContinuation<Bool, Never>) in
+            conn.send(content: data, completion: .contentProcessed { error in
+                cont.resume(returning: error == nil)
+            })
         }
     }
 }

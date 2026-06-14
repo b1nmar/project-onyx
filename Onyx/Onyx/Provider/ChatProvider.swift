@@ -219,25 +219,30 @@ public final class ChatProvider {
     ///   or the same errors as `respond(to:)`.
     public func respondDirect(messages: [[String: String]]) async throws -> AsyncStream<String> {
         guard !isGenerating else { throw OllamaServerError.modelBusy }
-        let container = try await ensureReady()
-        let tokenStream = try await generateFromModel(
-            container: container,
-            messages: messages,
-            maxTokens: 2048
-        )
-        isGenerating = true
-        return AsyncStream<String> { [weak self] continuation in
-            guard let self else { continuation.finish(); return }
-            let task = Task { @MainActor [weak self] in
-                guard let self else { return }
-                for await chunk in tokenStream {
-                    if Task.isCancelled { break }
-                    continuation.yield(chunk)
+        isGenerating = true  // set before any await — eliminates the race condition
+        do {
+            let container = try await ensureReady()
+            let tokenStream = try await generateFromModel(
+                container: container,
+                messages: messages,
+                maxTokens: 2048
+            )
+            return AsyncStream<String> { [weak self] continuation in
+                guard let self else { continuation.finish(); return }
+                let task = Task { [weak self] in  // no @MainActor — avoids main-thread contention
+                    guard let self else { return }
+                    for await chunk in tokenStream {
+                        if Task.isCancelled { break }
+                        continuation.yield(chunk)
+                    }
+                    await MainActor.run { self.isGenerating = false }
+                    continuation.finish()
                 }
-                self.isGenerating = false
-                continuation.finish()
+                continuation.onTermination = { _ in task.cancel() }
             }
-            continuation.onTermination = { _ in task.cancel() }
+        } catch {
+            isGenerating = false  // reset flag if setup fails
+            throw error
         }
     }
 
