@@ -80,6 +80,10 @@ actor OllamaServer {
         case .failed(let error):
             log.error("OllamaServer listener failed: \(error)")
             listener = nil
+            // Reset the setting so the toggle in Settings reflects reality.
+            Task { @MainActor in
+                OnyxSettings.shared.ollamaServerEnabled = false
+            }
             NotificationCenter.default.post(name: .ollamaServerStatusChanged, object: false)
         case .cancelled:
             NotificationCenter.default.post(name: .ollamaServerStatusChanged, object: false)

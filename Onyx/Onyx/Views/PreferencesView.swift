@@ -27,6 +27,7 @@ struct SettingsView: View {
                 serverSection
                 developerSection
             }
+            .formStyle(.grouped)
             .navigationTitle("Settings")
         }
         .task {
