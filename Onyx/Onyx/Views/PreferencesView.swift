@@ -18,14 +18,22 @@ struct SettingsView: View {
 
     @State private var systemPromptDraft: String = ChatProvider.shared.systemPrompt
     @State private var showCacheClearConfirm = false
+    @State private var serverIsRunning = false
 
     var body: some View {
         NavigationStack {
             Form {
                 assistantSection
+                serverSection
                 developerSection
             }
             .navigationTitle("Settings")
+        }
+        .task {
+            serverIsRunning = await OllamaServer.shared.isRunning
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .ollamaServerStatusChanged)) { n in
+            serverIsRunning = n.object as? Bool ?? false
         }
         .onDisappear {
             ChatProvider.shared.systemPrompt = systemPromptDraft
@@ -46,6 +54,37 @@ struct SettingsView: View {
             Text("Assistant")
         } footer: {
             Text("Injected before every conversation. Changes take effect on the next message.")
+        }
+    }
+
+    private var serverSection: some View {
+        Section {
+            Toggle("Enable Ollama API Server", isOn: Binding(
+                get: { OnyxSettings.shared.ollamaServerEnabled },
+                set: { newValue in
+                    OnyxSettings.shared.ollamaServerEnabled = newValue
+                    NotificationCenter.default.post(
+                        name: .ollamaServerSettingChanged, object: nil)
+                }
+            ))
+            if OnyxSettings.shared.ollamaServerEnabled {
+                HStack {
+                    Text("Port")
+                    Spacer()
+                    Text("\(OnyxSettings.shared.ollamaServerPort)")
+                        .foregroundStyle(.secondary)
+                }
+                HStack {
+                    Text("Status")
+                    Spacer()
+                    Text(serverIsRunning ? "Running" : "Starting…")
+                        .foregroundStyle(serverIsRunning ? .green : .secondary)
+                }
+            }
+        } header: {
+            Text("Local AI Server")
+        } footer: {
+            Text("Exposes an Ollama-compatible API on localhost:\(OnyxSettings.shared.ollamaServerPort). Connect Open WebUI or any Ollama/OpenAI client to http://localhost:\(OnyxSettings.shared.ollamaServerPort).")
         }
     }
 

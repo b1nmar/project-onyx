@@ -208,6 +208,39 @@ public final class ChatProvider {
         return await buildGenerationStream(container: container)
     }
 
+    /// Stream a response to a caller-supplied message array without touching
+    /// the in-app conversation history. Used exclusively by OllamaServer to serve
+    /// API requests without contaminating the chat UI state.
+    ///
+    /// - Parameter messages: Fully-formed messages array from the HTTP client,
+    ///   e.g. `[["role":"user","content":"Hello"]]`.
+    /// - Returns: `AsyncStream<String>` of token chunks.
+    /// - Throws: `OllamaServerError.modelBusy` if a generation is already running,
+    ///   or the same errors as `respond(to:)`.
+    public func respondDirect(messages: [[String: String]]) async throws -> AsyncStream<String> {
+        guard !isGenerating else { throw OllamaServerError.modelBusy }
+        let container = try await ensureReady()
+        let tokenStream = try await generateFromModel(
+            container: container,
+            messages: messages,
+            maxTokens: 2048
+        )
+        isGenerating = true
+        return AsyncStream<String> { [weak self] continuation in
+            guard let self else { continuation.finish(); return }
+            let task = Task { @MainActor [weak self] in
+                guard let self else { return }
+                for await chunk in tokenStream {
+                    if Task.isCancelled { break }
+                    continuation.yield(chunk)
+                }
+                self.isGenerating = false
+                continuation.finish()
+            }
+            continuation.onTermination = { _ in task.cancel() }
+        }
+    }
+
     /// Cancel the in-flight generation.
     ///
     /// The partial response already streamed to the UI is preserved in history

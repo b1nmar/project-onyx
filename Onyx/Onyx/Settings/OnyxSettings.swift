@@ -35,5 +35,34 @@ public final class OnyxSettings {
         }
     }
 
+    // MARK: - Ollama server
+
+    private static let ollamaServerEnabledKey = "onyx.ollamaServerEnabled"
+    private static let ollamaServerPortKey    = "onyx.ollamaServerPort"
+
+    /// Whether the local Ollama-compatible server is enabled. Default: false.
+    public var ollamaServerEnabled: Bool {
+        get {
+            guard UserDefaults.standard.object(forKey: Self.ollamaServerEnabledKey) != nil else {
+                return false
+            }
+            return UserDefaults.standard.bool(forKey: Self.ollamaServerEnabledKey)
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: Self.ollamaServerEnabledKey)
+        }
+    }
+
+    /// TCP port for the Ollama-compatible server. Default: 11434.
+    public var ollamaServerPort: Int {
+        get {
+            let stored = UserDefaults.standard.integer(forKey: Self.ollamaServerPortKey)
+            return stored > 0 ? stored : 11434
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: Self.ollamaServerPortKey)
+        }
+    }
+
     private init() {}
 }
